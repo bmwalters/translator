@@ -5,12 +5,19 @@ function Translator.OpenEditor(project)
 	frame:Center()
 	frame:MakePopup()
 
-	local left = vgui.Create("Panel", frame)
+	local left = vgui.Create("DScrollPanel", frame)
 	left:SetPos(0, 24)
-	left:SetSize(200, 576)
-	function left:Paint(w, h)
-		surface.SetDrawColor(color_white)
-		surface.DrawRect(0, 0, w, h)
+	left:SetSize(200, 550)
+
+	for i = 1, 10 do
+		local panel = vgui.Create("Panel", left)
+		panel:SetPos(0, (i - 1) * 60)
+		panel:SetSize(200, 60)
+		panel.color = ColorRand()
+		function panel:Paint(w, h)
+			surface.SetDrawColor(self.color)
+			surface.DrawRect(0,0,w,h)
+		end
 	end
 
 	local right = vgui.Create("Panel", frame)
@@ -21,3 +28,7 @@ function Translator.OpenEditor(project)
 		surface.DrawRect(0, 0, w, h)
 	end
 end
+
+concommand.Add("test_openeditor", function()
+	Translator.OpenEditor({ name = "Test Project (TTT)", path = "gamemodes/terrortown/gamemode/lang", format = "TTT" })
+end)
